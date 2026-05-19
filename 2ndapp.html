@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>✦ AESTHETIC ARCADE ✦ | dreamy games + multimedia</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      user-select: none;
+    }
+
+    /* video background - dreamy lo-fi aesthetic */
+    #bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -2;
+      filter: brightness(0.7) saturate(1.1) blur(2px);
+      transform: scale(1.02);
+    }
+
+    /* dark overlay for text readability */
+    .overlay-tint {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 30% 40%, rgba(20,15,10,0.55), rgba(30,22,18,0.7));
+      backdrop-filter: blur(3px);
+      z-index: -1;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Segoe UI', 'Quicksand', 'Poppins', 'Inter', system-ui, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem 1.5rem;
+      position: relative;
+    }
+
+    /* main glass panel - enhanced with blur + shadow */
+    .arcade-container {
+      max-width: 1350px;
+      width: 100%;
+      background: rgba(30, 24, 20, 0.55);
+      backdrop-filter: blur(16px);
+      border-radius: 3rem;
+      box-shadow: 0 30px 50px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 245, 215, 0.25);
+      padding: 2rem 1.8rem;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 235, 200, 0.3);
+    }
+
+    /* multimedia controls bar - music & vibe */
+    .multimedia-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(12px);
+      padding: 0.8rem 1.5rem;
+      border-radius: 100px;
+      margin-bottom: 2rem;
+      border: 1px solid rgba(255,220,170,0.4);
+    }
+    .audio-controls {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .audio-btn {
+      background: #e7c5a2;
+      border: none;
+      color: #3a281e;
+      font-weight: bold;
+      padding: 6px 16px;
+      border-radius: 40px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: 0.2s;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      font-family: monospace;
+      letter-spacing: 0.5px;
+    }
+    .audio-btn:hover {
+      background: #ffddb0;
+      transform: scale(0.96);
+    }
+    .volume-slider {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0,0,0,0.4);
+      padding: 4px 12px;
+      border-radius: 40px;
+    }
+    .volume-slider label {
+      color: #fae6cf;
+      font-size: 0.8rem;
+    }
+    input[type="range"] {
+      width: 100px;
+      cursor: pointer;
+      background: #ddbb99;
+      height: 3px;
+      border-radius: 5px;
+    }
+    .vibe-text {
+      color: #ffefdb;
+      font-size: 0.8rem;
+      background: rgba(0,0,0,0.4);
+      padding: 5px 12px;
+      border-radius: 40px;
+      letter-spacing: 0.5px;
+    }
+
+    /* header styling */
+    .aesthetic-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .aesthetic-header h1 {
+      font-size: 2.8rem;
+      font-weight: 600;
+      background: linear-gradient(135deg, #f9e0b0, #ffcd94, #e7b27a);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+    .aesthetic-header p {
+      font-size: 1rem;
+      color: #fcecd6;
+      margin-top: 0.4rem;
+      background: rgba(0,0,0,0.3);
+      display: inline-block;
+      padding: 0.2rem 1.2rem;
+      border-radius: 40px;
+      backdrop-filter: blur(4px);
+    }
+
+    /* game grid */
+    .games-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+    .game-card {
+      flex: 1;
+      min-width: 280px;
+      background: rgba(30, 24, 20, 0.65);
+      backdrop-filter: blur(8px);
+      border-radius: 2rem;
+      padding: 1.4rem 1.2rem 1.6rem;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: 1px solid rgba(255, 210, 150, 0.35);
+    }
+    .game-card:hover {
+      transform: translateY(-5px);
+      background: rgba(40, 32, 27, 0.75);
+      border-color: rgba(255, 210, 150, 0.7);
+    }
+    .game-title {
+      font-size: 1.7rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 1rem;
+      border-bottom: 2px dashed #dbaa77;
+      padding-bottom: 0.5rem;
+      color: #fae1bf;
+    }
+    .game-area {
+      margin: 1rem 0;
+      background: rgba(0,0,0,0.3);
+      border-radius: 1.5rem;
+      padding: 1rem;
+      text-align: center;
+    }
+    .game-status {
+      font-weight: 500;
+      margin-top: 0.7rem;
+      font-size: 0.8rem;
+      color: #f0dbbc;
+      background: rgba(0,0,0,0.4);
+      display: inline-block;
+      padding: 0.2rem 1rem;
+      border-radius: 60px;
+    }
+    button {
+      background: #c99260;
+      border: none;
+      color: #fff4e8;
+      font-weight: 600;
+      padding: 0.5rem 1.2rem;
+      border-radius: 3rem;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: 0.2s;
+      margin-top: 8px;
+      font-family: inherit;
+    }
+    button:hover {
+      background: #b0754a;
+      transform: scale(0.96);
+    }
+    .game-score {
+      font-weight: bold;
+      background: #2f241d;
+      border-radius: 60px;
+      padding: 0.2rem 1rem;
+      display: inline-block;
+      margin: 8px 0 0;
+      font-size: 0.85rem;
+      color: #ffefcf;
+    }
+
+    /* memory grid */
+    .memory-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      justify-items: center;
+      margin: 0 auto;
+    }
+    .memory-card {
+      background: #dbba97;
+      width: 55px;
+      height: 55px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.7rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    .memory-card.flipped {
+      background: #fff2e0;
+      box-shadow: 0 0 0 2px #f7c394;
+    }
+    .memory-card.matched {
+      visibility: hidden;
+      pointer-events: none;
+      opacity: 0;
+      transform: scale(0.7);
+    }
+    @media (max-width: 550px) {
+      .memory-card { width: 45px; height: 45px; font-size: 1.3rem; }
+    }
+
+    .clicker-bubble {
+      width: 120px;
+      height: 120px;
+      background: radial-gradient(circle at 30% 30%, #f3cfab, #ddac7c);
+      border-radius: 50%;
+      margin: 0.5rem auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-weight: bold;
+      color: #4a2c1a;
+      cursor: pointer;
+      box-shadow: 0 12px 18px rgba(0,0,0,0.3);
+      transition: 0.05s linear;
+    }
+    .clicker-bubble:active { transform: scale(0.93); }
+
+    .guess-input {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin: 12px 0;
+    }
+    .guess-input input {
+      background: #2e231d;
+      border: 1px solid #dcaa79;
+      padding: 8px 12px;
+      border-radius: 60px;
+      width: 100px;
+      text-align: center;
+      font-weight: bold;
+      color: #fbeace;
+    }
+    .feedback {
+      font-size: 0.8rem;
+      background: #2f241f;
+      border-radius: 50px;
+      padding: 4px 12px;
+      display: inline-block;
+      color: #ffebd2;
+    }
+    footer {
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 0.7rem;
+      color: #dbbf9b;
+    }
+  </style>
+</head>
+<body>
+
+<!-- background video: dreamy forest + soft particles (public use clip: Pexels cinematic) -->
+<video id="bg-video" autoplay loop muted playsinline poster="https://assets.mixkit.co/videos/preview/mixkit-forest-stream-with-sun-rays-1235-large.mp4">
+  <source src="https://assets.mixkit.co/videos/preview/mixkit-forest-stream-with-sun-rays-1235-large.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+<div class="overlay-tint"></div>
+
+<div class="arcade-container">
+  <!-- MULTIMEDIA CONTROL PANEL: audio + video ambient -->
+  <div class="multimedia-bar">
+    <div class="audio-controls">
+      <button id="bgMusicBtn" class="audio-btn">🎵 PLAY AMBIENT</button>
+      <button id="sfxToggleBtn" class="audio-btn">🔊 SFX ON</button>
+      <div class="volume-slider">
+        <label>🎚️ VOL</label>
+        <input type="range" id="globalVolume" min="0" max="1" step="0.05" value="0.4">
+      </div>
+    </div>
+    <div class="vibe-text">
+      🌿 lo-fi dreamscape • soft crackle • healing frequencies
+    </div>
+  </div>
+
+  <div class="aesthetic-header">
+    <h1>✦ velvet dream arcade ✦</h1>
+    <p>three mini games • immersive audio • visual poetry</p>
+  </div>
+
+  <div class="games-grid">
+    <!-- GAME 1 : MEMORY GROVE -->
+    <div class="game-card">
+      <div class="game-title"><span>🕊️</span> memory grove</div>
+      <div class="game-area">
+        <div id="memoryBoard" class="memory-grid"></div>
+        <div><span class="game-score" id="memoryScore">matches: 0 / 8</span></div>
+        <button id="resetMemoryBtn">⟳ reset grove</button>
+      </div>
+      <div class="game-status">⊹ find pairs • each match sparks a chime</div>
+    </div>
+
+    <!-- GAME 2 : CLICK BLOSSOM -->
+    <div class="game-card">
+      <div class="game-title"><span>🍃</span> click blossom</div>
+      <div class="game-area">
+        <div id="clickerBubble" class="clicker-bubble">🌸<br><span id="clickCountDisplay">0</span></div>
+        <div><span class="game-score">petals: <span id="clickTotal">0</span></span></div>
+        <button id="resetClickerBtn">reset blossom</button>
+      </div>
+      <div class="game-status">⊹ tap the glowing petal • soft haptic feedback</div>
+    </div>
+
+    <!-- GAME 3 : ECHO GUESS -->
+    <div class="game-card">
+      <div class="game-title"><span>🔮</span> echo guess</div>
+      <div class="game-area">
+        <div style="font-size: 1.8rem;">✨ ༄ ✨</div>
+        <div class="guess-input">
+          <input type="number" id="guessInput" placeholder="1-100" min="1" max="100">
+          <button id="guessBtn">whisper</button>
+        </div>
+        <div><span class="feedback" id="guessFeedback">enter a mystical number 1-100</span></div>
+        <div><span class="game-score" id="attemptCounter">attempts: 0</span></div>
+        <button id="resetGuessBtn">new mystery</button>
+      </div>
+      <div class="game-status">⊹ the oracle listens • find the hidden number</div>
+    </div>
+  </div>
+  <footer>✧  every click, every match, every guess resonates  ✧</footer>
+</div>
+
+<script>
+  (function() {
+    // ----- AUDIO / SFX SYSTEM (with Web Audio for cute tones & ambient background) -----
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    let audioCtx = null;
+    let isAudioAllowed = false;
+    let sfxEnabled = true;
+    let bgGain = null;
+    let bgOscillator = null;   // ambient drone
+    let bgInterval = null;
+    let globalVolumeNode = null;
+    let currentVolume = 0.4;
+    
+    // helper: init audio context on user interaction
+    function initAudio() {
+      if (audioCtx && audioCtx.state !== 'closed') return audioCtx;
+      audioCtx = new AudioContext();
+      globalVolumeNode = audioCtx.createGain();
+      globalVolumeNode.gain.value = currentVolume;
+      globalVolumeNode.connect(audioCtx.destination);
+      return audioCtx;
+    }
+
+    // play simple melodic beep / chime (for match, click)
+    function playChime(freq = 880, duration = 0.35, type = 'sine') {
+      if (!sfxEnabled) return;
+      if (!audioCtx || audioCtx.state === 'closed') return;
+      if (audioCtx.state !== 'running') {
+        audioCtx.resume().then(() => {
+          playInternal(freq, duration, type);
+        }).catch(e=>console.log);
+        return;
+      }
+      playInternal(freq, duration, type);
+    }
+    function playInternal(freq, duration, type) {
+      if (!audioCtx || !sfxEnabled) return;
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(globalVolumeNode);
+      osc.frequency.value = freq;
+      osc.type = type;
+      gain.gain.setValueAtTime(0.2, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+      osc.start();
+      osc.stop(now + duration);
+    }
+
+    // soft "pop" for clicker game
+    function playPop() {
+      if (!sfxEnabled) return;
+      if (!audioCtx) return;
+      if (audioCtx.state !== 'running') {
+        audioCtx.resume().then(()=>playPopInternal());
+        return;
+      }
+      playPopInternal();
+    }
+    function playPopInternal() {
+      if(!audioCtx) return;
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(globalVolumeNode);
+      osc.frequency.value = 620;
+      osc.type = 'triangle';
+      gain.gain.setValueAtTime(0.12, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.2);
+      osc.start();
+      osc.stop(now + 0.2);
+    }
+    
+    // special win fanfare
+    function winMelody() {
+      if(!sfxEnabled) return;
+      if(!audioCtx) return;
+      if(audioCtx.state !== 'running') audioCtx.resume().then(()=>winMelodyInternal());
+      else winMelodyInternal();
+    }
+    function winMelodyInternal() {
+      const notes = [523.25, 659.25, 783.99, 1046.50];
+      notes.forEach((f, idx) => {
+        setTimeout(() => playChime(f, 0.3, 'sine'), idx * 180);
+      });
+    }
+
+    // background ambient drone (lo-fi pad)
+    function startAmbientDrone() {
+      if (!audioCtx) return;
+      if (bgOscillator) stopAmbientDrone();
+      if (audioCtx.state !== 'running') {
+        audioCtx.resume().then(()=> startAmbientDroneInternal());
+        return;
+      }
+      startAmbientDroneInternal();
+    }
+    function startAmbientDroneInternal() {
+      if (!audioCtx) return;
+      bgOscillator = audioCtx.createOscillator();
+      const bgGainNode = audioCtx.createGain();
+      bgOscillator.connect(bgGainNode);
+      bgGainNode.connect(globalVolumeNode);
+      bgOscillator.type = 'sine';
+      bgOscillator.frequency.value = 175;
+      bgGainNode.gain.value = 0.12;
+      bgOscillator.start();
+      // add second harmonic
+      const bgOsc2 = audioCtx.createOscillator();
+      const bgGain2 = audioCtx.createGain();
+      bgOsc2.connect(bgGain2);
+      bgGain2.connect(globalVolumeNode);
+      bgOsc2.type = 'sine';
+      bgOsc2.frequency.value = 261.63;
+      bgGain2.gain.value = 0.07;
+      bgOsc2.start();
+      window._bgOsc2 = bgOsc2;
+      window._bgGain2 = bgGain2;
+      bgOscillator.onended = () => { bgOscillator = null; };
+      window._ambientOsc = bgOscillator;
+      window._ambientGain = bgGainNode;
+    }
+    function stopAmbientDrone() {
+      if (window._ambientOsc) {
+        try { window._ambientOsc.stop(); } catch(e) {}
+        window._ambientOsc = null;
+      }
+      if (window._bgOsc2) {
+        try { window._bgOsc2.stop(); } catch(e) {}
+        window._bgOsc2 = null;
+      }
+    }
+    let ambientActive = false;
+    document.getElementById('bgMusicBtn').addEventListener('click', () => {
+      initAudio();
+      if (!ambientActive) {
+        startAmbientDrone();
+        document.getElementById('bgMusicBtn').innerHTML = '🎵 AMBIENT ON';
+        ambientActive = true;
+      } else {
+        stopAmbientDrone();
+        document.getElementById('bgMusicBtn').innerHTML = '🎵 PLAY AMBIENT';
+        ambientActive = false;
+      }
+    });
+    
+    // volume control
+    const volumeSlider = document.getElementById('globalVolume');
+    volumeSlider.addEventListener('input', (e) => {
+      currentVolume = parseFloat(e.target.value);
+      if (globalVolumeNode) globalVolumeNode.gain.value = currentVolume;
+    });
+    
+    // sfx toggle
+    const sfxToggle = document.getElementById('sfxToggleBtn');
+    sfxToggle.addEventListener('click', () => {
+      sfxEnabled = !sfxEnabled;
+      sfxToggle.innerHTML = sfxEnabled ? "🔊 SFX ON" : "🔇 SFX OFF";
+    });
+    
+    // trigger audio context on first user gesture globally
+    function unlockAudioOnFirstTap() {
+      initAudio();
+      if (audioCtx && audioCtx.state !== 'running') {
+        audioCtx.resume().then(()=>{ console.log('audio ready'); });
+      }
+    }
+    document.body.addEventListener('click', unlockAudioOnFirstTap, { once: true });
+    document.body.addEventListener('touchstart', unlockAudioOnFirstTap, { once: true });
+    
+    // ---------- GAME 1 MEMORY with sfx match ----------
+    const emojis = ['🌙', '✨', '🌸', '🍃', '🌿', '💫', '🍂', '🕊️'];
+    let gameBoard = [];
+    let flippedIndices = [];
+    let lockBoard = false;
+    let matchedPairs = 0;
+    let matchedStatus = [];
+    const memoryGrid = document.getElementById('memoryBoard');
+    const memoryScoreSpan = document.getElementById('memoryScore');
+    
+    function initMemory() {
+      let cards = [...emojis, ...emojis];
+      for (let i = cards.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [cards[i], cards[j]] = [cards[j], cards[i]];
+      }
+      gameBoard = cards;
+      flippedIndices = [];
+      lockBoard = false;
+      matchedPairs = 0;
+      matchedStatus = new Array(gameBoard.length).fill(false);
+      updateMemoryScore();
+      renderMemoryBoard();
+    }
+    function updateMemoryScore() {
+      memoryScoreSpan.innerText = `matches: ${matchedPairs} / 8`;
+      if (matchedPairs === 8) {
+        winMelody();
+      }
+    }
+    function renderMemoryBoard() {
+      memoryGrid.innerHTML = '';
+      for (let i = 0; i < gameBoard.length; i++) {
+        const card = document.createElement('div');
+        card.classList.add('memory-card');
+        if (matchedStatus[i]) {
+          card.classList.add('matched');
+          card.innerText = '';
+        } else if (flippedIndices.includes(i)) {
+          card.classList.add('flipped');
+          card.innerText = gameBoard[i];
+        } else {
+          card.innerText = '?';
+        }
+        card.addEventListener('click', (idx => () => handleCardClick(idx))(i));
+        memoryGrid.appendChild(card);
+      }
+    }
+    function handleCardClick(idx) {
+      if (lockBoard) return;
+      if (matchedStatus[idx]) return;
+      if (flippedIndices.includes(idx)) return;
+      if (flippedIndices.length === 2) return;
+      flippedIndices.push(idx);
+      renderMemoryBoard();
+      if (flippedIndices.length === 2) {
+        lockBoard = true;
+        const a = flippedIndices[0], b = flippedIndices[1];
+        if (gameBoard[a] === gameBoard[b]) {
+          matchedStatus[a] = true;
+          matchedStatus[b] = true;
+          matchedPairs++;
+          updateMemoryScore();
+          playChime(880, 0.25, 'sine');
+          flippedIndices = [];
+          lockBoard = false;
+          renderMemoryBoard();
+        } else {
+          setTimeout(() => {
+            flippedIndices = [];
+            lockBoard = false;
+            renderMemoryBoard();
+          }, 700);
+        }
+      }
+    }
+    function resetMemory() {
+      let cards = [...emojis, ...emojis];
+      for (let i = cards.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [cards[i], cards[j]] = [cards[j], cards[i]];
+      }
+      gameBoard = cards;
+      flippedIndices = [];
+      lockBoard = false;
+      matchedPairs = 0;
+      matchedStatus = new Array(gameBoard.length).fill(false);
+      updateMemoryScore();
+      renderMemoryBoard();
+    }
+    initMemory();
+    document.getElementById('resetMemoryBtn').addEventListener('click', resetMemory);
+    
+    // GAME 2: CLICKER with pop sound
+    let clickCount = 0;
+    const clickTotalSpan = document.getElementById('clickTotal');
+    const clickCountSpan = document.getElementById('clickCountDisplay');
+    const clickBubbleDiv = document.getElementById('clickerBubble');
+    function updateClickerUI() {
+      clickTotalSpan.innerText = clickCount;
+      clickCountSpan.innerText = clickCount;
+    }
+    function handleBlossomClick() {
+      clickCount++;
+      updateClickerUI();
+      playPop();
+      clickBubbleDiv.style.transform = 'scale(0.94)';
+      setTimeout(() => { if(clickBubbleDiv) clickBubbleDiv.style.transform = ''; }, 100);
+      if (clickCount % 10 === 0 && clickCount > 0) playChime(523, 0.2, 'triangle');
+    }
+    clickBubbleDiv.addEventListener('click', handleBlossomClick);
+    document.getElementById('resetClickerBtn').addEventListener('click', () => { clickCount = 0; updateClickerUI(); });
+    updateClickerUI();
+    
+    // GAME 3: ECHO GUESS with sound on correct guess
+    let secretNumber = Math.floor(Math.random() * 100) + 1;
+    let attempts = 0;
+    const guessInput = document.getElementById('guessInput');
+    const guessBtn = document.getElementById('guessBtn');
+    const guessFeedback = document.getElementById('guessFeedback');
+    const attemptSpan = document.getElementById('attemptCounter');
+    const resetGuess = document.getElementById('resetGuessBtn');
+    
+    function updateGuessUI(msg, isError = false) {
+      guessFeedback.innerText = msg;
+      guessFeedback.style.background = isError ? '#4a2c22' : '#2f241f';
+    }
+    function checkGuess() {
+      let val = guessInput.value.trim();
+      if (val === "") { updateGuessUI("🔮 enter a number, please", true); return; }
+      const guess = Number(val);
+      if (isNaN(guess) || guess < 1 || guess > 100) { updateGuessUI("between 1-100 only", true); return; }
+      attempts++;
+      if (guess === secretNumber) {
+        updateGuessUI(`✨ correct! it was ${secretNumber} in ${attempts} tries ✨`);
+        guessBtn.disabled = true;
+        guessInput.disabled = true;
+        attemptSpan.innerText = `attempts: ${attempts} · solved!`;
+        winMelody();
+        playChime(1046, 0.5);
+      } else if (guess < secretNumber) {
+        updateGuessUI(`🍃 ${guess} is too low`);
+        playChime(440, 0.15);
+        guessInput.value = '';
+      } else {
+        updateGuessUI(`🍂 ${guess} is too high`);
+        playChime(330, 0.15);
+        guessInput.value = '';
+      }
+      attemptSpan.innerText = `attempts: ${attempts}`;
+    }
+    function resetGuessGame() {
+      secretNumber = Math.floor(Math.random() * 100) + 1;
+      attempts = 0;
+      guessBtn.disabled = false;
+      guessInput.disabled = false;
+      guessInput.value = '';
+      updateGuessUI("new secret number • 1–100");
+      attemptSpan.innerText = `attempts: 0`;
+    }
+    guessBtn.addEventListener('click', checkGuess);
+    resetGuess.addEventListener('click', resetGuessGame);
+    guessInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') checkGuess(); });
+    resetGuessGame();
+  })();
+</script>
+</body>
+</html>
